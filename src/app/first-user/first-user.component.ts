@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AccountService} from '../account.service';
+import {FirstUserCredentials} from '../first-user-credentials';
 
 @Component({
   selector: 'app-first-user',
@@ -13,12 +15,16 @@ export class FirstUserComponent implements OnInit {
   firstName: string;
   lastName: string;
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
+    console.log(this.serverPassword);
+    this.accountService.initializeFirstUser(
+      new FirstUserCredentials(this.serverPassword, this.username, this.password, this.firstName, this.lastName)
+    );
   }
 
 }

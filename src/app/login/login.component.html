@@ -4,11 +4,11 @@
       <legend>Login</legend>
       <div>
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" (ngModel)="username" maxlength="60" required>
+        <input type="text" id="username" name="username" [(ngModel)]="username" maxlength="60" required>
       </div>
       <div>
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" (ngModel)="password" maxlength="60" required>
+        <input type="password" id="password" name="password" [(ngModel)]="password" maxlength="60" required>
       </div>
       <input type="submit">
     </fieldset>
