@@ -21,7 +21,6 @@ export class FirstUserComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.serverPassword);
     this.accountService.initializeFirstUser(
       new FirstUserCredentials(this.serverPassword, this.username, this.password, this.firstName, this.lastName)
     );
