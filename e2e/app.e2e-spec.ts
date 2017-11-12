@@ -1,14 +1,14 @@
-import { IoTLoggerFrontendPage } from './app.po';
+import { AppPage } from './app.po';
 
 describe('io-t-logger-frontend App', () => {
-  let page: IoTLoggerFrontendPage;
+  let page: AppPage;
 
   beforeEach(() => {
-    page = new IoTLoggerFrontendPage();
+    page = new AppPage();
   });
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!!');
+    expect(page.getParagraphText()).toEqual('Welcome to app!');
   });
 });
