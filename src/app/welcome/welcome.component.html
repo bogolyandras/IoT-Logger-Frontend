@@ -1,3 +1,11 @@
-<p>
-  welcome works!
-</p>
+<div>
+  <p *ngIf="!initializationDetermined">Contacting the server...</p>
+  <div *ngIf="initializationDetermined">
+    <div *ngIf="initialized">
+      <p>Login here please</p>
+    </div>
+    <div *ngIf="!initialized">
+      <app-first-user-credentials></app-first-user-credentials>
+    </div>
+  </div>
+</div>
