@@ -26,15 +26,19 @@ export class AuthenticationService {
 
   isInitialized(): Observable<boolean> {
     if (this.initialized == null) {
+      const reply = new Subject<boolean>();
       this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
         .subscribe(result => {
           this.initialized = result.initialized;
           this._initialized.next(result.initialized);
+          reply.next(result.initialized);
         }, error => {
-          this._initialized.error(null);
+          reply.error(null);
         });
+      return reply;
+    } else {
+      return this._initialized;
     }
-    return this._initialized;
   }
 
   initialize(firstUserCredentials: FirstUserCredentials): Observable<boolean> {

@@ -1,7 +1,11 @@
 <div>
-  <div *ngIf="!initializationDetermined">Contacting the server...</div>
+  <div *ngIf="!initializationDetermined && !initializationDeterminationFailed">Contacting the server...</div>
+  <div *ngIf="!initializationDetermined && initializationDeterminationFailed">
+    Failed to contact the server...
+    <button (click)="retry()">Retry connection to the server</button>
+  </div>
   <div *ngIf="initializationDetermined">
-    <div *ngIf="!initialized && !initializationDeterminationFailed">
+    <div *ngIf="!initialized">
       <app-first-user-credentials></app-first-user-credentials>
     </div>
     <div *ngIf="initialized">

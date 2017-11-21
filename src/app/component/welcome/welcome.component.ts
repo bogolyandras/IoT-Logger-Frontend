@@ -28,4 +28,9 @@ export class WelcomeComponent implements OnInit {
     );
   }
 
+  retry(): void {
+    this.initializationDeterminationFailed = false;
+    this.ngOnInit();
+  }
+
 }
