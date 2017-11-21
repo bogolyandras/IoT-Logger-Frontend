@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {AuthenticationService} from '../../authentication.service';
-import {FirstUserCredentials} from '../../value/authentication/first-user-credentials';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AuthenticationService} from '../../../service/authentication.service';
+import {FirstUserCredentials} from '../../../value/authentication/first-user-credentials';
 
 @Component({
   selector: 'app-first-user-credentials',
@@ -18,6 +18,15 @@ export class FirstUserCredentialsComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.authenticationService.initialize(this.model)
+      .subscribe(
+        success => {
+          // nothing to do
+        },
+        error => {
+          this.submitted = false;
+        }
+      );
   }
 
   ngOnInit() {

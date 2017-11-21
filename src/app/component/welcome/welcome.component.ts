@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {AuthenticationService} from '../authentication.service';
+import {AuthenticationService} from '../../service/authentication.service';
 
 @Component({
   selector: 'app-welcome',
@@ -12,15 +12,18 @@ export class WelcomeComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService) { }
 
   initializationDetermined = false;
+  initializationDeterminationFailed = false;
   initialized: boolean;
 
   ngOnInit() {
     this.authenticationService.isInitialized().subscribe(
-      result => {
-        if (result != null) {
-          this.initializationDetermined = true;
-          this.initialized = result.initialized;
-        }
+    result => {
+        this.initializationDetermined = true;
+        this.initialized = result;
+      },
+      error => {
+        this.initializationDetermined = false;
+        this.initializationDeterminationFailed = true;
       }
     );
   }

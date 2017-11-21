@@ -1,0 +1,11 @@
+<div>
+  <div *ngIf="!initializationDetermined">Contacting the server...</div>
+  <div *ngIf="initializationDetermined">
+    <div *ngIf="!initialized && !initializationDeterminationFailed">
+      <app-first-user-credentials></app-first-user-credentials>
+    </div>
+    <div *ngIf="initialized">
+      <app-login-form></app-login-form>
+    </div>
+  </div>
+</div>

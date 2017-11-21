@@ -1,9 +1,7 @@
 export class FirstUserStatus {
 
-  initialized: boolean;
-
-  constructor(initialized: boolean) {
-    this.initialized = initialized;
-  }
+  constructor(
+    public initialized: boolean
+  ) { }
 
 }
