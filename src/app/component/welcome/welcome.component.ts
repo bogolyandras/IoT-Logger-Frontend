@@ -22,7 +22,8 @@ export class WelcomeComponent implements OnInit {
     this.authenticationService.isInitializedAndLoggedIn().subscribe(
     result => {
         this.initializationDetermined = true;
-        this.initialized = result;
+        this.initializationDeterminationFailed = false;
+        this.initialized = true;
       },
       error => {
         this.initializationDetermined = false;
@@ -31,7 +32,6 @@ export class WelcomeComponent implements OnInit {
     );
     this.authenticationService.authenticationStatus().subscribe(
       result => {
-        console.log(result);
         this.authenticationDetermined = true;
         this.authenticated = result != null;
       }

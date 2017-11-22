@@ -43,10 +43,12 @@ export class AuthenticationService {
 
   isInitializedAndLoggedIn(): Observable<boolean> {
     if (this.initialized == null) {
+      const subject = new Subject<boolean>();
       this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
         .subscribe(result => {
           this.initialized = result.initialized;
           this._initialized.next(result.initialized);
+          subject.next(result.initialized);
           this.authenticationToken = localStorage.getItem('iotlogger_token');
           if (this.authenticationToken == null) {
             this.authenticationAccount.next(null);
@@ -54,10 +56,12 @@ export class AuthenticationService {
             this.attemptLoginWithStoredToken();
           }
         }, error => {
-          this._initialized.error(null);
+          subject.error(null);
         });
+      return subject;
+    } else {
+      return this._initialized;
     }
-    return this._initialized;
   }
 
   initialize(firstUserCredentials: FirstUserCredentials): Observable<boolean> {

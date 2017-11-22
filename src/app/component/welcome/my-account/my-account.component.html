@@ -1,7 +1,15 @@
 <div>
-  <div *ngIf="account != null">{{account.id}}
-    <h1>Welcome {{account.firstName}}!</h1>
-    <p>You are logged in! <button (click)="logout()">Logout</button></p>
+  <div *ngIf="account != null">
+    <table class="collapse">
+      <tr>
+        <td>
+          <h1>Welcome {{account.firstName}}!</h1>
+          <p>You are logged in! <button (click)="logout()">Logout</button></p>
+        </td>
+        <td>{{account.id}}</td>
+      </tr>
+    </table>
+
   </div>
 </div>
 
