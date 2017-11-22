@@ -4,12 +4,23 @@
       <tr>
         <td>
           <h1>Welcome {{account.firstName}}!</h1>
-          <p>You are logged in! <button (click)="logout()">Logout</button></p>
+          <p>You are logged in! <button (click)="logout()">Log out!</button></p>
+          <p>Go to your <a routerLink="/device-list">devices</a>.</p>
         </td>
-        <td>{{account.id}}</td>
+        <td>
+          <h2>Account id</h2>
+          <p>{{account.id}}</p>
+          <h2>Username</h2>
+          <p>{{account.username}}</p>
+          <h2>Name</h2>
+          <p>{{account.firstName}} {{account.lastName}}</p>
+          <h2>Registration time</h2>
+          <p>{{registrationTime}}</p>
+          <h2>User type</h2>
+          <p>{{account.userType}}</p>
+        </td>
       </tr>
     </table>
 
   </div>
 </div>
-

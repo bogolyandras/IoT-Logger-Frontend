@@ -1,13 +1,23 @@
 <div>
-  <form (ngSubmit)="onSubmit()">
+  <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
     <table class="collapse">
       <tr>
-        <td class="labelbox"><label>Username:</label></td>
-        <td><input type="text" required [(ngModel)]="model.username" name="username"></td>
+        <td class="labelbox"></td>
+        <td><h1>Log in</h1></td>
       </tr>
       <tr>
-        <td class="labelbox"><label>Password:</label></td>
-        <td><input type="password" required [(ngModel)]="model.password" name="password"></td>
+        <td class="labelbox"><label for="username">Username:</label></td>
+        <td>
+          <input type="text" required [(ngModel)]="model.username" id="username" name="username" #username="ngModel">
+          <span [hidden]="username.valid ||username.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="password">Password:</label></td>
+        <td>
+          <input type="password" required [(ngModel)]="model.password" id="password" name="password" #password="ngModel">
+          <span [hidden]="password.valid || password.pristine" class="warning">⚠️</span>
+        </td>
       </tr>
       <tr>
         <td></td>
@@ -18,8 +28,12 @@
       </tr>
       <tr>
         <td></td>
+        <td class="warning"><p>{{errorMessage}}</p></td>
+      </tr>
+      <tr>
+        <td></td>
         <td>
-          <button type="submit" [disabled]="submitted">Submit</button>
+          <button type="submit" [disabled]="submitted || !loginForm.form.valid">Log in!</button>
         </td>
       </tr>
     </table>

@@ -5,8 +5,8 @@
         <td class="navigation-left">
           <ul>
             <li><a routerLink="/welcome">Account</a></li>
-            <li><a routerLink="/user-list">Users</a></li>
-            <li><a routerLink="/device-list">Devices</a></li>
+            <li *ngIf="loggedIn"><a routerLink="/device-list">Devices</a></li>
+            <li *ngIf="isAdministrator"><a routerLink="/user-list">Users</a></li>
           </ul>
         </td>
         <td class="navigation-right">
@@ -24,6 +24,11 @@
 <div class="album-skeleton">
   <div class="container">
     <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="referencelist">
+  <div class="container">
+    <p>Distributed IoT Logger</p>
   </div>
 </div>
 

@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../../service/authentication.service';
 import {UsernamePassword} from '../../../value/authentication/username-password';
+import {ErrorExtractor} from '../../../utility/error-extractor';
 
 @Component({
   selector: 'app-login-form',
@@ -14,6 +15,7 @@ export class LoginFormComponent implements OnInit {
 
   submitted = false;
   keepLoggedIn = true;
+  errorMessage: string;
 
   model = new UsernamePassword('', '');
 
@@ -21,6 +23,7 @@ export class LoginFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMessage = null;
     this.submitted = true;
     this.authenticationService.login(this.model, this.keepLoggedIn)
       .subscribe(
@@ -28,6 +31,7 @@ export class LoginFormComponent implements OnInit {
           // do nothing on success
         },
         error => {
+          this.errorMessage = ErrorExtractor.extractErrorMessage(error);
           this.submitted = false;
         }
       );

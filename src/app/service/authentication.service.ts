@@ -13,7 +13,9 @@ import {Account} from '../value/account/account';
 @Injectable()
 export class AuthenticationService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    this.isInitializedAndLoggedIn();
+  }
 
   // Value that holds if the first user has been created or not
   private initialized: boolean;
@@ -100,7 +102,7 @@ export class AuthenticationService {
           subject.complete();
         },
         error => {
-          subject.error(null);
+          subject.error(error);
         }
       );
     return subject;
