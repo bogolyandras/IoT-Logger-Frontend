@@ -15,8 +15,11 @@ export class WelcomeComponent implements OnInit {
   initializationDeterminationFailed = false;
   initialized: boolean;
 
+  authenticationDetermined = false;
+  authenticated = false;
+
   ngOnInit() {
-    this.authenticationService.isInitialized().subscribe(
+    this.authenticationService.isInitializedAndLoggedIn().subscribe(
     result => {
         this.initializationDetermined = true;
         this.initialized = result;
@@ -24,6 +27,12 @@ export class WelcomeComponent implements OnInit {
       error => {
         this.initializationDetermined = false;
         this.initializationDeterminationFailed = true;
+      }
+    );
+    this.authenticationService.authenticationStatus().subscribe(
+      result => {
+        this.authenticationDetermined = true;
+        this.authenticated = result;
       }
     );
   }

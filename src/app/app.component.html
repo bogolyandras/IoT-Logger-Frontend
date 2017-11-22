@@ -1,5 +1,27 @@
-<nav>
-  <a routerLink="/welcome">Welcome</a>
-  <a routerLink="/about">About</a>
-</nav>
-<router-outlet></router-outlet>
+<div class="navigation">
+  <div class="container">
+    <table class="collapse">
+      <tr>
+        <td class="navigation-left">
+          <ul>
+            <li><a routerLink="/welcome">Welcome</a></li>
+          </ul>
+        </td>
+        <td class="navigation-right">
+          <ul>
+            <li><a routerLink="/about">About</a></li>
+          </ul>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="title-skeleton">
+  <div class="container"><div class="title"></div></div>
+</div>
+<div class="album-skeleton">
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+

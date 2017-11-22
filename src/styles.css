@@ -1,4 +1,166 @@
-/* You can add global styles to this file, and also import other style files */
-* {
-  font-family: sans-serif;
+body {
+  background-color:#a5c4dc;
+  margin: 0px;
+}
+
+table {
+  border-spacing: 0px;
+}
+
+img {
+  border-style: none;
+}
+
+p, a, h1, h2, h3, h4, h5, h6 {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-weight: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0.4em;
+}
+p, a {
+  font-size: 1em;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: dodgerblue;
+  text-decoration: none;
+}
+
+body div.container {
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding: 0px 12px 0px 12px;
+}
+
+div.title-skeleton {
+  background-color: #325c80;
+  background-image: linear-gradient(to right, #325c80,#2f506d);
+}
+
+div.album-skeleton {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: white;
+}
+
+div.title {
+  padding-top: 20px;
+  padding-bottom: 15px;
+  color: white;
+}
+
+div.title h1 {
+  font-size: 3em;
+  font-weight: 400;
+}
+
+div.title p {
+  font-weight: 100;
+}
+
+div.referencelist {
+  background-color:#a5c4dc;
+  color: white;
+  padding-top: 5px;
+  padding-bottom: 20px;
+}
+
+table.album {
+  border-spacing: 2px;
+}
+
+table.album tr td {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+
+table.album tr td a {
+  display: block;
+  line-height: 0;
+}
+
+table.album tr td {
+  text-align: center;
+}
+
+table.album tr td img {
+  width: 100%;
+  height: auto;
+}
+
+div.navigation {
+  background-color: white;
+}
+
+div.navigation ul {
+  display: block;
+  padding: 0px;
+  margin: 0px;
+}
+
+div.navigation li {
+  display: inline;
+}
+
+div.navigation a {
+  display: inline-block;
+}
+
+table.collapse {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.navigation-left {
+  text-align: left;
+}
+
+.navigation-right {
+  text-align: right;
+}
+
+div.navigation a {
+  font-variant: small-caps;
+  font-weight: bold;
+  color: black;
+  padding: 10px;
+  border-bottom: solid 3px darkslategray;
+}
+
+div.navigation a:hover {
+  border-bottom-color: darkturquoise;
+}
+
+@media screen and (max-width: 700px) {
+
+  table.collapse, table.collapse tbody, table.collapse tr, table.collapse tr > td {
+    width: 100%;
+    display: block;
+  }
+
+  .navigation-right {
+    text-align: left;
+  }
+
+  div.navigation li, div.navigation a {
+    display: block;
+  }
+
+  table.album tr td img {
+    padding: 2px;
+  }
+
+}
+@media print {
+
+  div.navigation {
+    display: none;
+  }
+
 }

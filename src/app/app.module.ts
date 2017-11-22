@@ -11,7 +11,8 @@ import {AuthenticationService} from './service/authentication.service';
 import {AboutComponent} from './component/about/about.component';
 import {FirstUserCredentialsComponent} from './component/welcome/first-user-credentials/first-user-credentials.component';
 import {FormsModule} from '@angular/forms';
-import { LoginFormComponent } from './component/welcome/login-form/login-form.component';
+import {LoginFormComponent} from './component/welcome/login-form/login-form.component';
+import { MyAccountComponent } from './component/welcome/my-account/my-account.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { LoginFormComponent } from './component/welcome/login-form/login-form.co
     PageNotFoundComponent,
     AboutComponent,
     FirstUserCredentialsComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    MyAccountComponent
   ],
   imports: [
     BrowserModule,

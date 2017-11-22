@@ -1,15 +1,25 @@
 <div>
-  <div *ngIf="!initializationDetermined && !initializationDeterminationFailed">Contacting the server...</div>
-  <div *ngIf="!initializationDetermined && initializationDeterminationFailed">
-    Failed to contact the server...
-    <button (click)="retry()">Retry connection to the server</button>
+  <div *ngIf="!initializationDetermined">
+    <div *ngIf="!initializationDeterminationFailed">Contacting the server...</div>
+    <div *ngIf="initializationDeterminationFailed">
+      <p>Failed to contact the server...</p>
+      <p><a (click)="retry()">Retry connection to the server</a></p>
+    </div>
   </div>
   <div *ngIf="initializationDetermined">
     <div *ngIf="!initialized">
       <app-first-user-credentials></app-first-user-credentials>
     </div>
     <div *ngIf="initialized">
-      <app-login-form></app-login-form>
+      <div *ngIf="!authenticationDetermined">Determining if logged in or not...</div>
+      <div *ngIf="authenticationDetermined">
+        <div *ngIf="authenticated">
+          <app-my-account></app-my-account>
+        </div>
+        <div *ngIf="!authenticated">
+          <app-login-form></app-login-form>
+        </div>
+      </div>
     </div>
   </div>
 </div>

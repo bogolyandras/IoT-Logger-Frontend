@@ -14,6 +14,7 @@ export class LoginFormComponent implements OnInit {
 
   loggedIn = false;
   submitted = false;
+  keepLoggedIn = true;
 
   model = new UsernamePassword('', '');
 
@@ -28,7 +29,7 @@ export class LoginFormComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.authenticationService.login(this.model)
+    this.authenticationService.login(this.model, this.keepLoggedIn)
       .subscribe(
         success => {
           // do nothing on success

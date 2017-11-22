@@ -10,6 +10,10 @@
         <label>Password:</label>
         <input type="password" required [(ngModel)]="model.password" name="password">
       </div>
+      <div>
+        <input type="checkbox" [(ngModel)]="keepLoggedIn" name="keepLoggedIn" id="keepLoggedIn">
+        <label for="keepLoggedIn">Keep logged in</label>
+      </div>
       <button type="submit" [disabled]="submitted">Submit</button>
     </form>
   </div>

@@ -8,15 +8,18 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {JwtToken} from '../value/authentication/jwt-token';
 import {Subject} from 'rxjs/Subject';
 import {UsernamePassword} from '../value/authentication/username-password';
+import {Account} from '../value/account/account';
 
 @Injectable()
 export class AuthenticationService {
 
   constructor(private httpClient: HttpClient) { }
 
+  // Value that holds if the first user has been created or not
   private initialized: boolean;
   private _initialized = new ReplaySubject<boolean>(1);
 
+  // JWT token user for every request that needs authentication
   private authenticationToken: string;
   private _authenticationStatus = new ReplaySubject<boolean>(1);
 
@@ -24,7 +27,21 @@ export class AuthenticationService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  isInitialized(): Observable<boolean> {
+  authHeaderWithJsonContentType(): any {
+    if (this.authenticationToken == null) {
+      throw new Error('No authentication token!');
+    }
+    return {
+      headers: new HttpHeaders(
+        {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.authenticationToken
+        }
+      )
+    };
+  }
+
+  isInitializedAndLoggedIn(): Observable<boolean> {
     if (this.initialized == null) {
       const reply = new Subject<boolean>();
       this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
@@ -32,6 +49,27 @@ export class AuthenticationService {
           this.initialized = result.initialized;
           this._initialized.next(result.initialized);
           reply.next(result.initialized);
+
+          const authenticationToken = localStorage.getItem('iotlogger_token');
+          if (authenticationToken == null) {
+            console.log('a');
+            this._authenticationStatus.next(false);
+          } else {
+            this.authenticationToken = authenticationToken;
+            console.log('b');
+            this.httpClient.get<Account>(environment.backendUrl + '/accounts/my', this.authHeaderWithJsonContentType())
+              .subscribe(
+                account => {
+                  console.log('c');
+                  this._authenticationStatus.next(true);
+                },
+                error => {
+                  this._authenticationStatus.next(false);
+                  localStorage.removeItem('iotlogger_token');
+                }
+              );
+          }
+
         }, error => {
           reply.error(null);
         });
@@ -63,13 +101,16 @@ export class AuthenticationService {
     return this._authenticationStatus;
   }
 
-  login(usernamePassword: UsernamePassword) {
+  login(usernamePassword: UsernamePassword, keepLoggedIn: boolean) {
     const subject = new Subject<boolean>();
     this.httpClient.post<JwtToken>(environment.backendUrl + '/authentication', usernamePassword, this.httpOptions)
       .subscribe(
         result => {
           this.authenticationToken = result.token;
           this._authenticationStatus.next(true);
+          if (keepLoggedIn) {
+            localStorage.setItem('iotlogger_token', result.token);
+          }
           subject.complete();
         },
         error => {
@@ -77,6 +118,12 @@ export class AuthenticationService {
         }
       );
     return subject;
+  }
+
+  logout(): void {
+    localStorage.removeItem('iotlogger_token');
+    this.authenticationToken = null;
+    this._authenticationStatus.next(false);
   }
 
 }
