@@ -11,9 +11,18 @@ img {
   border-style: none;
 }
 
-p, a, h1, h2, h3, h4, h5, h6 {
+p, a, h1, h2, h3, h4, h5, h6, input, label, button {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: normal;
+}
+
+.labelbox, .labelbox label {
+  width: 200px;
+  text-align: right;
+}
+
+input[type=text], input[type=password] {
+  width: 300px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -154,6 +163,15 @@ div.navigation a:hover {
 
   table.album tr td img {
     padding: 2px;
+  }
+
+  .labelbox, .labelbox label {
+    width: auto;
+    text-align: left;
+  }
+
+  input[type=text], input[type=password] {
+    width: 100%;
   }
 
 }

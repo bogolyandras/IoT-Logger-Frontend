@@ -16,6 +16,9 @@ export class FirstUserCredentialsComponent implements OnInit {
 
   model = new FirstUserCredentials('', '', '', '', '');
 
+  ngOnInit() {
+  }
+
   onSubmit() {
     this.submitted = true;
     this.authenticationService.initialize(this.model)
@@ -27,9 +30,6 @@ export class FirstUserCredentialsComponent implements OnInit {
           this.submitted = false;
         }
       );
-  }
-
-  ngOnInit() {
   }
 
 }

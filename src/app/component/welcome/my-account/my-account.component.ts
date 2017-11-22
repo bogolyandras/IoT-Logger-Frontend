@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AuthenticationService} from '../../../service/authentication.service';
+import {Account} from '../../../value/account/account';
 
 @Component({
   selector: 'app-my-account',
@@ -8,9 +10,22 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class MyAccountComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authenticationService: AuthenticationService) { }
+
+  private account: Account;
 
   ngOnInit() {
+    this.authenticationService.authenticationStatus()
+      .subscribe(
+        account => {
+          if (account != null) {
+            this.account = account;
+          }
+    });
+  }
+
+  logout(): void {
+    this.authenticationService.logout();
   }
 
 }

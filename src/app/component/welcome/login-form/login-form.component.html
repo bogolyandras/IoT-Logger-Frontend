@@ -1,20 +1,27 @@
 <div>
-  <div *ngIf="loggedIn">You are logged in!</div>
-  <div *ngIf="!loggedIn">
-    <form (ngSubmit)="onSubmit()">
-      <div>
-        <label>Username:</label>
-        <input type="text" required [(ngModel)]="model.username" name="username">
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" required [(ngModel)]="model.password" name="password">
-      </div>
-      <div>
-        <input type="checkbox" [(ngModel)]="keepLoggedIn" name="keepLoggedIn" id="keepLoggedIn">
-        <label for="keepLoggedIn">Keep logged in</label>
-      </div>
-      <button type="submit" [disabled]="submitted">Submit</button>
-    </form>
-  </div>
+  <form (ngSubmit)="onSubmit()">
+    <table class="collapse">
+      <tr>
+        <td class="labelbox"><label>Username:</label></td>
+        <td><input type="text" required [(ngModel)]="model.username" name="username"></td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label>Password:</label></td>
+        <td><input type="password" required [(ngModel)]="model.password" name="password"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <input type="checkbox" [(ngModel)]="keepLoggedIn" name="keepLoggedIn" id="keepLoggedIn">
+          <label for="keepLoggedIn">Keep logged in</label>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <button type="submit" [disabled]="submitted">Submit</button>
+        </td>
+      </tr>
+    </table>
+  </form>
 </div>

@@ -21,13 +21,13 @@ export class AuthenticationService {
 
   // JWT token user for every request that needs authentication
   private authenticationToken: string;
-  private _authenticationStatus = new ReplaySubject<boolean>(1);
+  private authenticationAccount = new ReplaySubject<Account>(1);
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  authHeaderWithJsonContentType(): any {
+  authHeaderWithJsonContentType(): Object {
     if (this.authenticationToken == null) {
       throw new Error('No authentication token!');
     }
@@ -43,40 +43,21 @@ export class AuthenticationService {
 
   isInitializedAndLoggedIn(): Observable<boolean> {
     if (this.initialized == null) {
-      const reply = new Subject<boolean>();
       this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
         .subscribe(result => {
           this.initialized = result.initialized;
           this._initialized.next(result.initialized);
-          reply.next(result.initialized);
-
-          const authenticationToken = localStorage.getItem('iotlogger_token');
-          if (authenticationToken == null) {
-            console.log('a');
-            this._authenticationStatus.next(false);
+          this.authenticationToken = localStorage.getItem('iotlogger_token');
+          if (this.authenticationToken == null) {
+            this.authenticationAccount.next(null);
           } else {
-            this.authenticationToken = authenticationToken;
-            console.log('b');
-            this.httpClient.get<Account>(environment.backendUrl + '/accounts/my', this.authHeaderWithJsonContentType())
-              .subscribe(
-                account => {
-                  console.log('c');
-                  this._authenticationStatus.next(true);
-                },
-                error => {
-                  this._authenticationStatus.next(false);
-                  localStorage.removeItem('iotlogger_token');
-                }
-              );
+            this.attemptLoginWithStoredToken();
           }
-
         }, error => {
-          reply.error(null);
+          this._initialized.error(null);
         });
-      return reply;
-    } else {
-      return this._initialized;
     }
+    return this._initialized;
   }
 
   initialize(firstUserCredentials: FirstUserCredentials): Observable<boolean> {
@@ -87,7 +68,8 @@ export class AuthenticationService {
           this.initialized = true;
           this._initialized.next(true);
           this.authenticationToken = result.token;
-          this._authenticationStatus.next(true);
+          localStorage.setItem('iotlogger_token', result.token);
+          this.attemptLoginWithStoredToken();
           subject.complete();
         },
         error => {
@@ -97,8 +79,8 @@ export class AuthenticationService {
     return subject;
   }
 
-  authenticationStatus(): Observable<boolean> {
-    return this._authenticationStatus;
+  authenticationStatus(): Observable<Account> {
+    return this.authenticationAccount;
   }
 
   login(usernamePassword: UsernamePassword, keepLoggedIn: boolean) {
@@ -107,7 +89,7 @@ export class AuthenticationService {
       .subscribe(
         result => {
           this.authenticationToken = result.token;
-          this._authenticationStatus.next(true);
+          this.attemptLoginWithStoredToken();
           if (keepLoggedIn) {
             localStorage.setItem('iotlogger_token', result.token);
           }
@@ -120,10 +102,23 @@ export class AuthenticationService {
     return subject;
   }
 
+  private attemptLoginWithStoredToken(): void {
+    this.httpClient.get<Account>(environment.backendUrl + '/accounts/my', this.authHeaderWithJsonContentType())
+      .subscribe(
+        account => {
+          this.authenticationAccount.next(account);
+        },
+        error => {
+          this.authenticationAccount.next(null);
+          localStorage.removeItem('iotlogger_token');
+        }
+      );
+  }
+
   logout(): void {
     localStorage.removeItem('iotlogger_token');
     this.authenticationToken = null;
-    this._authenticationStatus.next(false);
+    this.authenticationAccount.next(null);
   }
 
 }

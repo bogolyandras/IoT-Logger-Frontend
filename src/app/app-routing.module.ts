@@ -1,13 +1,17 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes} from '@angular/router';
-import { PageNotFoundComponent } from './component/page-not-found/page-not-found.component';
-import { WelcomeComponent } from './component/welcome/welcome.component';
-import { AboutComponent } from './component/about/about.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {PageNotFoundComponent} from './component/page-not-found/page-not-found.component';
+import {WelcomeComponent} from './component/welcome/welcome.component';
+import {AboutComponent} from './component/about/about.component';
+import {UserListComponent} from './component/user-list/user-list.component';
+import {DeviceListComponent} from './component/device-list/device-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
   { path: 'welcome', component: WelcomeComponent },
   { path: 'about', component: AboutComponent },
+  { path: 'user-list', component: UserListComponent },
+  { path: 'device-list', component: DeviceListComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

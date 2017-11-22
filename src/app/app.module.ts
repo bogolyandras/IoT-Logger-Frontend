@@ -13,6 +13,8 @@ import {FirstUserCredentialsComponent} from './component/welcome/first-user-cred
 import {FormsModule} from '@angular/forms';
 import {LoginFormComponent} from './component/welcome/login-form/login-form.component';
 import { MyAccountComponent } from './component/welcome/my-account/my-account.component';
+import { UserListComponent } from './component/user-list/user-list.component';
+import { DeviceListComponent } from './component/device-list/device-list.component';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { MyAccountComponent } from './component/welcome/my-account/my-account.co
     AboutComponent,
     FirstUserCredentialsComponent,
     LoginFormComponent,
-    MyAccountComponent
+    MyAccountComponent,
+    UserListComponent,
+    DeviceListComponent
   ],
   imports: [
     BrowserModule,

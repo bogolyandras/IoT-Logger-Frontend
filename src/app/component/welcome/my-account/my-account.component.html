@@ -1,6 +1,7 @@
 <div>
-  <p>
-    You are logged in!
-  </p>
+  <div *ngIf="account != null">{{account.id}}
+    <h1>Welcome {{account.firstName}}!</h1>
+    <p>You are logged in! <button (click)="logout()">Logout</button></p>
+  </div>
 </div>
 

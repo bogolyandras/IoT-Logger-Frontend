@@ -31,8 +31,9 @@ export class WelcomeComponent implements OnInit {
     );
     this.authenticationService.authenticationStatus().subscribe(
       result => {
+        console.log(result);
         this.authenticationDetermined = true;
-        this.authenticated = result;
+        this.authenticated = result != null;
       }
     );
   }

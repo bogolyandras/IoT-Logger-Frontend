@@ -3,7 +3,7 @@
     <div *ngIf="!initializationDeterminationFailed">Contacting the server...</div>
     <div *ngIf="initializationDeterminationFailed">
       <p>Failed to contact the server...</p>
-      <p><a (click)="retry()">Retry connection to the server</a></p>
+      <p><button (click)="retry()">Retry connection to the server</button></p>
     </div>
   </div>
   <div *ngIf="initializationDetermined">
