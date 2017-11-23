@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../../service/authentication.service';
 import {FirstUserCredentials} from '../../../value/authentication/first-user-credentials';
+import {ErrorExtractor} from "../../../utility/error-extractor";
 
 @Component({
   selector: 'app-first-user-credentials',
@@ -13,6 +14,7 @@ export class FirstUserCredentialsComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService) { }
 
   submitted = false;
+  errorMessage: string;
 
   model = new FirstUserCredentials('', '', '', '', '');
 
@@ -20,6 +22,7 @@ export class FirstUserCredentialsComponent implements OnInit {
   }
 
   onSubmit() {
+    this.errorMessage = null;
     this.submitted = true;
     this.authenticationService.initialize(this.model)
       .subscribe(
@@ -27,6 +30,7 @@ export class FirstUserCredentialsComponent implements OnInit {
           // nothing to do
         },
         error => {
+          this.errorMessage = ErrorExtractor.extractErrorMessage(error);
           this.submitted = false;
         }
       );

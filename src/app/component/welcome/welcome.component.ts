@@ -23,11 +23,18 @@ export class WelcomeComponent implements OnInit {
     result => {
         this.initializationDetermined = true;
         this.initializationDeterminationFailed = false;
-        this.initialized = true;
+        this.initialized = result;
       },
       error => {
         this.initializationDetermined = false;
         this.initializationDeterminationFailed = true;
+      }
+    );
+    this.authenticationService.isInitialized().subscribe(
+      result => {
+        this.initializationDetermined = true;
+        this.initializationDeterminationFailed = false;
+        this.initialized = result;
       }
     );
     this.authenticationService.authenticationStatus().subscribe(

@@ -58,7 +58,7 @@ export class AuthenticationService {
             this.attemptLoginWithStoredToken();
           }
         }, error => {
-          subject.error(null);
+          subject.error(error);
         });
       return subject;
     } else {
@@ -66,8 +66,12 @@ export class AuthenticationService {
     }
   }
 
-  initialize(firstUserCredentials: FirstUserCredentials): Observable<boolean> {
-    const subject = new Subject<boolean>();
+  isInitialized(): Observable<boolean> {
+    return this._initialized;
+  }
+
+  initialize(firstUserCredentials: FirstUserCredentials): Observable<object> {
+    const subject = new Subject<object>();
     this.httpClient.post<JwtToken>(environment.backendUrl + '/accounts/firstAccount', firstUserCredentials, this.httpOptions)
       .subscribe(
         result => {
@@ -76,10 +80,10 @@ export class AuthenticationService {
           this.authenticationToken = result.token;
           localStorage.setItem('iotlogger_token', result.token);
           this.attemptLoginWithStoredToken();
-          subject.complete();
+          subject.next(result);
         },
         error => {
-          subject.error(null);
+          subject.error(error);
         }
       );
     return subject;
