@@ -1,0 +1,53 @@
+<form #newAccountForm="ngForm" (ngSubmit)="onSubmit()">
+  <table class="collapse">
+    <tr>
+      <td class="labelbox"></td>
+      <td><h1>Add a new user</h1></td>
+    </tr>
+    <tr>
+      <td class="labelbox"><label for="username">Username:</label></td>
+      <td>
+        <input type="text" required [(ngModel)]="model.username" id="username" name="username" #username="ngModel">
+        <span [hidden]="username.valid ||username.pristine" class="warning">⚠️</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="labelbox"><label for="password">Password:</label></td>
+      <td>
+        <input type="password" required [(ngModel)]="model.password" id="password" name="password" #password="ngModel">
+        <span [hidden]="password.valid ||password.pristine" class="warning">⚠️</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="labelbox"><label for="firstName">First name:</label></td>
+      <td>
+        <input type="text" required [(ngModel)]="model.firstName" id="firstName" name="firstName" #firstName="ngModel">
+        <span [hidden]="firstName.valid ||firstName.pristine" class="warning">⚠️</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="labelbox"><label for="lastName">Last name:</label></td>
+      <td>
+        <input type="text" required [(ngModel)]="model.lastName" id="lastName" name="lastName" #lastName="ngModel">
+        <span [hidden]="lastName.valid ||lastName.pristine" class="warning">⚠️</span>
+      </td>
+    </tr>
+    <tr>
+      <td class="labelbox"><label for="userType">User type:</label></td>
+      <td>
+        <select [(ngModel)]="model.userType" id="userType" name="userType" #userType="ngModel" required>
+          <option *ngFor="let userType of userTypes" [value]="userType" [label]="userType" [attr.selected]="userType==model.userType ? true : null">{{userType}}</option>
+        </select>
+        <span [hidden]="userType.valid ||userType.pristine" class="warning">⚠️</span>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="warning"><p>{{errorMessage}}</p></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button type="submit" [disabled]="submitted || !newAccountForm.form.valid">Submit</button></td>
+    </tr>
+  </table>
+</form>

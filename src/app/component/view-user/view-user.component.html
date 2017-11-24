@@ -1,13 +1,13 @@
 <div>
+  <div *ngIf="account == null && errorMessage == null">
+    <p>Retrieving user details for {{id}}...</p>
+  </div>
+  <div *ngIf="errorMessage != null">
+    <p class="warning">{{errorMessage}}</p>
+  </div>
   <div *ngIf="account != null">
     <table class="collapse">
       <tr>
-        <td>
-          <h1>Welcome {{account.firstName}}!</h1>
-          <p>You are logged in!</p>
-          <p><button (click)="logout()">Log out!</button></p>
-          <p>Go to your <a routerLink="/device-list">devices</a>.</p>
-        </td>
         <td>
           <h2>Name</h2>
           <p>{{account.firstName}} {{account.lastName}}</p>
@@ -19,6 +19,10 @@
           <p>{{account.registrationTime * 1000 | date:'long'}}</p>
           <h2>Account id</h2>
           <p>{{account.id}}</p>
+        </td>
+        <td>
+          <p><button>Edit</button></p>
+          <p><button>Delete</button></p>
         </td>
       </tr>
     </table>

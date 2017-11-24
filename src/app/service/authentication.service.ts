@@ -29,6 +29,19 @@ export class AuthenticationService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
+  authHeader(): Object {
+    if (this.authenticationToken == null) {
+      throw new Error('No authentication token!');
+    }
+    return {
+      headers: new HttpHeaders(
+        {
+          'Authorization': 'Bearer ' + this.authenticationToken
+        }
+      )
+    };
+  }
+
   authHeaderWithJsonContentType(): Object {
     if (this.authenticationToken == null) {
       throw new Error('No authentication token!');
@@ -45,13 +58,13 @@ export class AuthenticationService {
 
   isInitializedAndLoggedIn(): Observable<boolean> {
     if (this.initialized == null) {
+      this.authenticationToken = localStorage.getItem('iotlogger_token');
       const subject = new Subject<boolean>();
       this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
         .subscribe(result => {
           this.initialized = result.initialized;
           this._initialized.next(result.initialized);
           subject.next(result.initialized);
-          this.authenticationToken = localStorage.getItem('iotlogger_token');
           if (this.authenticationToken == null) {
             this.authenticationAccount.next(null);
           } else {

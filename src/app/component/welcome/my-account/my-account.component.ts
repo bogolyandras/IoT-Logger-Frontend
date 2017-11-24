@@ -13,7 +13,6 @@ export class MyAccountComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService) { }
 
   private account: Account;
-  private registrationTime: Date;
 
   ngOnInit() {
     this.authenticationService.authenticationStatus()
@@ -21,7 +20,6 @@ export class MyAccountComponent implements OnInit {
         account => {
           if (account != null) {
             this.account = account;
-            this.registrationTime = new Date(account.registrationTime * 1000);
           }
     });
   }

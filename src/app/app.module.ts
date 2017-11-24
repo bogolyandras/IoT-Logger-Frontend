@@ -12,9 +12,12 @@ import {AboutComponent} from './component/about/about.component';
 import {FirstUserCredentialsComponent} from './component/welcome/first-user-credentials/first-user-credentials.component';
 import {FormsModule} from '@angular/forms';
 import {LoginFormComponent} from './component/welcome/login-form/login-form.component';
-import { MyAccountComponent } from './component/welcome/my-account/my-account.component';
-import { UserListComponent } from './component/user-list/user-list.component';
-import { DeviceListComponent } from './component/device-list/device-list.component';
+import {MyAccountComponent} from './component/welcome/my-account/my-account.component';
+import {UserListComponent} from './component/user-list/user-list.component';
+import {DeviceListComponent} from './component/device-list/device-list.component';
+import {UserService} from './service/user.service';
+import {AddUserComponent} from './component/add-user/add-user.component';
+import {ViewUserComponent} from './component/view-user/view-user.component';
 
 
 @NgModule({
@@ -27,7 +30,9 @@ import { DeviceListComponent } from './component/device-list/device-list.compone
     LoginFormComponent,
     MyAccountComponent,
     UserListComponent,
-    DeviceListComponent
+    DeviceListComponent,
+    AddUserComponent,
+    ViewUserComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,8 @@ import { DeviceListComponent } from './component/device-list/device-list.compone
     HttpClientModule
   ],
   providers: [
-    AuthenticationService
+    AuthenticationService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

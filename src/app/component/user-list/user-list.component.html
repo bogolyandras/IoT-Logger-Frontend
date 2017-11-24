@@ -1,3 +1,26 @@
+<h1>User list</h1>
 <p>
-  user-list works!
+  <button routerLink="/add-user">Add user</button>
 </p>
+<div *ngIf="errorMessage != null">
+  <p class="warning">{{errorMessage}}</p>
+</div>
+<div *ngIf="users == null">
+  <p>Loading user list...</p>
+</div>
+<div *ngIf="users !=  null">
+  <table>
+    <tr>
+      <th>Username</th>
+      <th>Name</th>
+      <th>User type</th>
+      <th>Registration time</th>
+    </tr>
+    <tr *ngFor="let user of users">
+      <td><a routerLink="/view-user/{{user.id}}">{{user.username}}</a></td>
+      <td>{{user.firstName}} {{user.lastName}}</td>
+      <td>{{user.userType}}</td>
+      <td>{{user.registrationTime * 1000 | date:'long'}}</td>
+    </tr>
+  </table>
+</div>

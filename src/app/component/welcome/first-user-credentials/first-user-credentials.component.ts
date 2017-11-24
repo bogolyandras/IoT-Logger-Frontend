@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../../service/authentication.service';
 import {FirstUserCredentials} from '../../../value/authentication/first-user-credentials';
-import {ErrorExtractor} from "../../../utility/error-extractor";
+import {ErrorExtractor} from '../../../utility/error-extractor';
 
 @Component({
   selector: 'app-first-user-credentials',
