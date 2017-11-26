@@ -38,4 +38,11 @@ export class UserService {
     );
   }
 
+  deleteAccount(id: String): Observable<Object> {
+    return this.httpClient.delete<Object>(
+      environment.backendUrl + '/accounts/byId/' + id,
+      this.authenticationService.authHeaderWithTextResponse()
+    );
+  }
+
 }

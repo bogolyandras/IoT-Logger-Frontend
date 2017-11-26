@@ -42,6 +42,20 @@ export class AuthenticationService {
     };
   }
 
+  authHeaderWithTextResponse(): Object {
+    if (this.authenticationToken == null) {
+      throw new Error('No authentication token!');
+    }
+    return {
+      headers: new HttpHeaders(
+        {
+          'Authorization': 'Bearer ' + this.authenticationToken,
+        }
+      ),
+    responseType: 'text'
+    };
+  }
+
   authHeaderWithJsonContentType(): Object {
     if (this.authenticationToken == null) {
       throw new Error('No authentication token!');

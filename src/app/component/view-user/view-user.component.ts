@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../service/user.service';
 import {Account} from '../../value/account/account';
 import {ErrorExtractor} from '../../utility/error-extractor';
@@ -14,6 +14,7 @@ export class ViewUserComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService
   ) { }
 
@@ -31,6 +32,18 @@ export class ViewUserComponent implements OnInit {
         this.errorMessage = ErrorExtractor.extractErrorMessage(error);
       }
     );
+  }
+
+  deleteUser() {
+    this.userService.deleteAccount(this.id)
+      .subscribe(
+        success => {
+          this.router.navigateByUrl('/user-list');
+        },
+        error => {
+          this.errorMessage = ErrorExtractor.extractErrorMessage(error);
+        }
+      );
   }
 
 }
