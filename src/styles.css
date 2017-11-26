@@ -80,14 +80,26 @@ div.referencelist {
   padding-bottom: 20px;
 }
 
+table.list td, table.list th {
+  border-right: 1px solid #2f506d;
+  border-top: 1px solid #2f506d;
+  padding: 3px;
+}
+
+table.list {
+  width: 100%;
+  border-left: 1px solid #2f506d;
+  border-bottom: 1px solid #2f506d;
+}
+
 table.album {
   border-spacing: 2px;
 }
 
 table.album tr td {
-  margin: 0px;
-  padding: 0px;
-  border: 0px;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 table.album tr td a {

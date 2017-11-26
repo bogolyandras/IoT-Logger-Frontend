@@ -13,7 +13,7 @@ import {ErrorExtractor} from '../../utility/error-extractor';
 export class ViewUserComponent implements OnInit {
 
   constructor(
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private userService: UserService
   ) { }
@@ -23,7 +23,7 @@ export class ViewUserComponent implements OnInit {
   account: Account;
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.userService.getUser(this.id).subscribe(
       account => {
         this.account = account;

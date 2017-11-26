@@ -1,7 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
-
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './/app-routing.module';
 import {WelcomeComponent} from './component/welcome/welcome.component';
@@ -18,6 +17,7 @@ import {DeviceListComponent} from './component/device-list/device-list.component
 import {UserService} from './service/user.service';
 import {AddUserComponent} from './component/add-user/add-user.component';
 import {ViewUserComponent} from './component/view-user/view-user.component';
+import {EditUserComponent} from './component/edit-user/edit-user.component';
 
 
 @NgModule({
@@ -32,7 +32,8 @@ import {ViewUserComponent} from './component/view-user/view-user.component';
     UserListComponent,
     DeviceListComponent,
     AddUserComponent,
-    ViewUserComponent
+    ViewUserComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,

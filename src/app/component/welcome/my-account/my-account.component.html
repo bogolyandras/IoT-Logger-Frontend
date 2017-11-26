@@ -4,9 +4,10 @@
       <tr>
         <td>
           <h1>Welcome {{account.firstName}}!</h1>
-          <p>You are logged in!</p>
-          <p><button (click)="logout()">Log out!</button></p>
-          <p>Go to your <a routerLink="/device-list">devices</a>.</p>
+          <p>You are logged in! You may choose from the following actions.</p>
+          <p><button (click)="logout()">Log out</button></p>
+          <p><button routerLink="/edit-user">Edit my profile</button></p>
+          <p><button routerLink="/device-list">My devices</button></p>
         </td>
         <td>
           <h2>Name</h2>

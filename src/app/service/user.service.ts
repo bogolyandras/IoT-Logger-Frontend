@@ -30,9 +30,17 @@ export class UserService {
     );
   }
 
+  patchMyAccount(newAccount: NewAccount): Observable<Account> {
+    return this.httpClient.patch<Account>(
+      environment.backendUrl + '/accounts/my',
+      newAccount,
+      this.authenticationService.authHeaderWithJsonContentType()
+    );
+  }
+
   patchAccount(identifier: string, newAccount: NewAccount): Observable<Account> {
     return this.httpClient.patch<Account>(
-      environment.backendUrl + 'accounts/byId/' + identifier,
+      environment.backendUrl + '/accounts/byId/' + identifier,
       newAccount,
       this.authenticationService.authHeaderWithJsonContentType()
     );
