@@ -18,9 +18,7 @@ export class MyAccountComponent implements OnInit {
     this.authenticationService.authenticationStatus()
       .subscribe(
         account => {
-          if (account != null) {
-            this.account = account;
-          }
+          this.account = account;
     });
   }
 

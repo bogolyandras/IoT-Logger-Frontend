@@ -36,15 +36,19 @@ export class EditUserComponent implements OnInit {
     if (this.id == null) {
       this.authenticationService.authenticationStatus().subscribe(
         account => {
-          this.account = account;
-          this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
+          if (account != null) {
+            this.account = account;
+            this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
+          }
         }
       );
     } else {
       this.userService.getUser(this.id).subscribe(
         account => {
-          this.account = account;
-          this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
+          if (account != null) {
+            this.account = account;
+            this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
+          }
         },
         error => {
           this.errorMessage = ErrorExtractor.extractErrorMessage(error);
@@ -68,16 +72,17 @@ export class EditUserComponent implements OnInit {
     }
     observable.subscribe(
       account => {
-        this.account = account;
-        this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
-        if (this.id == null) {
-          this.router.navigateByUrl('/welcome');
-        } else {
-          this.router.navigateByUrl('/view-user/' + this.id);
+        if (account != null) {
+          this.account = account;
+          this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
+          if (this.id == null) {
+            this.router.navigateByUrl('/welcome');
+          } else {
+            this.router.navigateByUrl('/view-user/' + this.id);
+          }
         }
       },
       error => {
-        console.log(error);
         this.errorMessage = ErrorExtractor.extractErrorMessage(error);
         this.submitted = false;
       }
