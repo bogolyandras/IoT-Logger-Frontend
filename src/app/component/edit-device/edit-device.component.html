@@ -1,0 +1,39 @@
+<div *ngIf="device == null">
+  <p>Loading device...</p>
+</div>
+<div *ngIf="device != null">
+  <form #editDeviceForm="ngForm" (ngSubmit)="onSubmit()">
+    <table class="collapse">
+      <tr>
+        <td class="labelbox"></td>
+        <td><h1>Edit device</h1></td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label>Identifier:</label></td>
+        <td>{{device.id}}</td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="name">Name:</label></td>
+        <td>
+          <input type="text" required [(ngModel)]="newDevice.name" id="name" name="name" #name="ngModel">
+          <span [hidden]="name.valid ||name.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="description">Description:</label></td>
+        <td>
+          <textarea [(ngModel)]="newDevice.description" id="description" name="description" #description="ngModel"></textarea>
+          <span [hidden]="description.valid ||description.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="warning"><p>{{errorMessage}}</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" [disabled]="submitted || !editDeviceForm.form.valid">Edit device</button></td>
+      </tr>
+    </table>
+  </form>
+</div>

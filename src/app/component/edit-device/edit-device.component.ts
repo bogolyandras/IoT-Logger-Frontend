@@ -1,31 +1,37 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Device} from '../../value/device/device';
+import {NewDevice} from '../../value/device/new-device';
+import {ErrorExtractor} from '../../utility/error-extractor';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DeviceService} from '../../service/device.service';
-import {ErrorExtractor} from '../../utility/error-extractor';
 
 @Component({
-  selector: 'app-view-device',
-  templateUrl: './view-device.component.html',
-  styleUrls: ['./view-device.component.css'],
+  selector: 'app-edit-device',
+  templateUrl: './edit-device.component.html',
+  styleUrls: ['./edit-device.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ViewDeviceComponent implements OnInit {
+export class EditDeviceComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private deviceService: DeviceService) { }
+    private deviceService: DeviceService
+  ) { }
 
   id: string;
-  errorMessage: string;
   device: Device;
+  newDevice: NewDevice;
+
+  errorMessage: string;
+  submitted = false;
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.deviceService.getDevice(this.id).subscribe(
       device => {
         this.device = device;
+        this.newDevice = new NewDevice(device.name, device.description);
       },
       error => {
         this.errorMessage = ErrorExtractor.extractErrorMessage(error);
@@ -33,13 +39,18 @@ export class ViewDeviceComponent implements OnInit {
     );
   }
 
-  deleteDevice() {
-    this.deviceService.deleteDevice(this.id).subscribe(
-      success => {
-        this.router.navigateByUrl('/device-list');
+  onSubmit() {
+    this.submitted = true;
+    if (this.newDevice.description === '') {
+      this.newDevice.description = null;
+    }
+    this.deviceService.patchDevice(this.id, this.newDevice).subscribe(
+      device => {
+        this.router.navigateByUrl('/view-device/' + this.id);
       },
       error => {
         this.errorMessage = ErrorExtractor.extractErrorMessage(error);
+        this.submitted = false;
       }
     );
   }

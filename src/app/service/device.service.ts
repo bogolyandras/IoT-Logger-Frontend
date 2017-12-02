@@ -35,14 +35,14 @@ export class DeviceService {
 
   patchDevice(id: string, newDevice: NewDevice): Observable<Device> {
     return this.httpClient.patch<Device>(
-      environment.backendUrl + 'devices/byId/' + id,
+      environment.backendUrl + '/devices/byId/' + id,
       newDevice,
       this.authenticationService.authHeaderWithJsonContentType());
   }
 
   deleteDevice(id: string): Observable<Object> {
     return this.httpClient.delete<Object>(
-      environment.backendUrl + 'devices/byId/' + id,
+      environment.backendUrl + '/devices/byId/' + id,
       this.authenticationService.authHeaderWithTextResponse()
     );
   }

@@ -1,3 +1,24 @@
-<p>
-  view-device works!
-</p>
+<div>
+  <div *ngIf="device == null && errorMessage == null">
+    <p>Retrieving device details for {{id}}...</p>
+  </div>
+  <div *ngIf="errorMessage != null">
+    <p class="warning">{{errorMessage}}</p>
+  </div>
+  <div *ngIf="device != null">
+    <table class="collapse">
+      <tr>
+        <td>
+          <h2>Name</h2>
+          <p>{{device.name}}</p>
+          <h2>Description</h2>
+          <p>{{device.description}}</p>
+        </td>
+        <td>
+          <p><button routerLink="/edit-device/{{device.id}}">Edit</button></p>
+          <p><button (click)="deleteDevice()">Delete</button></p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
