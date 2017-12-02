@@ -14,18 +14,20 @@ import {Account} from '../value/account/account';
 export class AuthenticationService {
 
   constructor(private httpClient: HttpClient) {
-    this.isInitializedAndLoggedIn();
+    this.initializationStatus = InitializationStatus.FailedToDetermine;
+    this.account.next(null);
+    this.determineIfInitialized();
   }
 
   // Value that holds if the first user has been created or not
-  private initialized: boolean;
-  private _initialized = new ReplaySubject<boolean>(1);
+  private initializationStatus: InitializationStatus;
+  private _initializationStatus = new ReplaySubject<InitializationStatus>(1);
 
   // JWT token user for every request that needs authentication
   private authenticationToken: string;
-  private authenticationAccount = new ReplaySubject<Account>(1);
+  private account = new ReplaySubject<Account>(1);
 
-  private httpOptions = {
+  private jsonHttpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
@@ -70,42 +72,73 @@ export class AuthenticationService {
     };
   }
 
-  isInitializedAndLoggedIn(): Observable<boolean> {
-    if (this.initialized == null) {
-      this.authenticationToken = localStorage.getItem('iotlogger_token');
-      const subject = new Subject<boolean>();
-      this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
-        .subscribe(result => {
-          this.initialized = result.initialized;
-          this._initialized.next(result.initialized);
-          subject.next(result.initialized);
-          if (this.authenticationToken == null) {
-            this.authenticationAccount.next(null);
+  determineIfInitialized(): void {
+    if (this.initializationStatus !== InitializationStatus.FailedToDetermine) {
+      throw new Error('Cannot invoke initialization determination if current process is running!');
+    }
+    this.initializationStatus = InitializationStatus.Determining;
+    this._initializationStatus.next(this.initializationStatus);
+    this.httpClient.get<FirstUserStatus>(environment.backendUrl + '/accounts/firstAccount')
+      .subscribe(
+        result => {
+          if (result.initialized) {
+            // If it is initialized, we should determinde if we already logged in!
+            this.initializationStatus = InitializationStatus.Initialized;
+            this._initializationStatus.next(this.initializationStatus);
+            this.determineIfLoggedIn();
           } else {
-            this.attemptLoginWithStoredToken();
+            // We should initialize the server this case
+            this.initializationStatus = InitializationStatus.NotInitialized;
+            this._initializationStatus.next(this.initializationStatus);
           }
         }, error => {
-          subject.error(error);
-        });
-      return subject;
-    } else {
-      return this._initialized;
+          // Maybe we can't access the server
+          this.initializationStatus = InitializationStatus.FailedToDetermine;
+          this._initializationStatus.next(this.initializationStatus);
+        }
+      );
+  }
+
+  determineIfLoggedIn(): void {
+    this.authenticationToken = localStorage.getItem('iotlogger_token');
+    if (this.authenticationToken != null) {
+      this.attemptLoginWithStoredToken();
     }
   }
 
-  isInitialized(): Observable<boolean> {
-    return this._initialized;
+  attemptLoginWithStoredToken(): void {
+    this.httpClient.get<Account>(environment.backendUrl + '/accounts/my', this.authHeaderWithJsonContentType())
+      .subscribe(
+        account => {
+          this.account.next(account);
+        },
+        error => {
+          this.account.next(null);
+          this.authenticationToken = null;
+          localStorage.removeItem('iotlogger_token');
+        }
+      );
   }
 
-  initialize(firstUserCredentials: FirstUserCredentials): Observable<object> {
-    const subject = new Subject<object>();
-    this.httpClient.post<JwtToken>(environment.backendUrl + '/accounts/firstAccount', firstUserCredentials, this.httpOptions)
+  observeAccount(): Observable<Account> {
+    return this.account;
+  }
+
+  observerInitializationStatus(): Observable<InitializationStatus> {
+    return this._initializationStatus;
+  }
+
+  initialize(firstUserCredentials: FirstUserCredentials): Observable<JwtToken> {
+    const subject = new Subject<JwtToken>();
+    this.httpClient.post<JwtToken>(environment.backendUrl + '/accounts/firstAccount', firstUserCredentials, this.jsonHttpOptions)
       .subscribe(
         result => {
-          this.initialized = true;
-          this._initialized.next(true);
+          this.initializationStatus = InitializationStatus.Initialized;
+          this._initializationStatus.next(this.initializationStatus);
+
           this.authenticationToken = result.token;
           localStorage.setItem('iotlogger_token', result.token);
+
           this.attemptLoginWithStoredToken();
           subject.next(result);
         },
@@ -116,13 +149,9 @@ export class AuthenticationService {
     return subject;
   }
 
-  authenticationStatus(): Observable<Account> {
-    return this.authenticationAccount;
-  }
-
   login(usernamePassword: UsernamePassword, keepLoggedIn: boolean) {
     const subject = new Subject<boolean>();
-    this.httpClient.post<JwtToken>(environment.backendUrl + '/authentication', usernamePassword, this.httpOptions)
+    this.httpClient.post<JwtToken>(environment.backendUrl + '/authentication', usernamePassword, this.jsonHttpOptions)
       .subscribe(
         result => {
           this.authenticationToken = result.token;
@@ -139,23 +168,14 @@ export class AuthenticationService {
     return subject;
   }
 
-  private attemptLoginWithStoredToken(): void {
-    this.httpClient.get<Account>(environment.backendUrl + '/accounts/my', this.authHeaderWithJsonContentType())
-      .subscribe(
-        account => {
-          this.authenticationAccount.next(account);
-        },
-        error => {
-          this.authenticationAccount.next(null);
-          localStorage.removeItem('iotlogger_token');
-        }
-      );
-  }
-
   logout(): void {
     localStorage.removeItem('iotlogger_token');
     this.authenticationToken = null;
-    this.authenticationAccount.next(null);
+    this.account.next(null);
   }
 
+}
+
+export enum InitializationStatus {
+  Determining, FailedToDetermine, Initialized, NotInitialized
 }

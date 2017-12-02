@@ -1,5 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import {AuthenticationService} from '../../service/authentication.service';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {AuthenticationService, InitializationStatus} from '../../service/authentication.service';
+import {Subscription} from 'rxjs/Subscription';
+import {Account} from '../../value/account/account';
 
 @Component({
   selector: 'app-welcome',
@@ -7,47 +9,42 @@ import {AuthenticationService} from '../../service/authentication.service';
   styleUrls: ['./welcome.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomeComponent implements OnInit, OnDestroy {
 
   constructor(private authenticationService: AuthenticationService) { }
 
-  initializationDetermined = false;
-  initializationDeterminationFailed = false;
-  initialized: boolean;
+  // Strange solution to import an enum to be used in a template
+  InitializationStatus = InitializationStatus;
 
-  authenticationDetermined = false;
-  authenticated = false;
+  initializationStatus = InitializationStatus.Determining;
+  account: Account;
+
+  private initializationStatusSubscription: Subscription;
+  private accountSubscription: Subscription;
 
   ngOnInit() {
-    this.authenticationService.isInitializedAndLoggedIn().subscribe(
-    result => {
-        this.initializationDetermined = true;
-        this.initializationDeterminationFailed = false;
-        this.initialized = result;
-      },
-      error => {
-        this.initializationDetermined = false;
-        this.initializationDeterminationFailed = true;
-      }
-    );
-    this.authenticationService.isInitialized().subscribe(
+
+    this.initializationStatusSubscription = this.authenticationService.observerInitializationStatus().subscribe(
       result => {
-        this.initializationDetermined = true;
-        this.initializationDeterminationFailed = false;
-        this.initialized = result;
+        this.initializationStatus = result;
       }
     );
-    this.authenticationService.authenticationStatus().subscribe(
+
+    this.accountSubscription = this.authenticationService.observeAccount().subscribe(
       result => {
-        this.authenticationDetermined = true;
-        this.authenticated = result != null;
+        this.account = result;
       }
     );
+
+  }
+
+  ngOnDestroy(): void {
+    this.initializationStatusSubscription.unsubscribe();
+    this.accountSubscription.unsubscribe();
   }
 
   retry(): void {
-    this.initializationDeterminationFailed = false;
-    this.ngOnInit();
+    this.authenticationService.determineIfInitialized();
   }
 
 }

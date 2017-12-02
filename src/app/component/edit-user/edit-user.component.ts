@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from '../../service/authentication.service';
 import {UserService} from '../../service/user.service';
 import {ErrorExtractor} from '../../utility/error-extractor';
 import {Account, UserType} from '../../value/account/account';
 import {NewAccount} from '../../value/account/new-account';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-edit-user',
@@ -12,7 +13,8 @@ import {NewAccount} from '../../value/account/new-account';
   styleUrls: ['./edit-user.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class EditUserComponent implements OnInit {
+export class EditUserComponent implements OnInit, OnDestroy {
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,30 +33,32 @@ export class EditUserComponent implements OnInit {
   password: string;
   submitted = false;
 
+  private subscription: Subscription;
+
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     if (this.id == null) {
-      this.authenticationService.authenticationStatus().subscribe(
+      this.subscription = this.authenticationService.observeAccount().subscribe(
         account => {
-          if (account != null) {
-            this.account = account;
-            this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
-          }
+          this.account = account;
+          this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
         }
       );
     } else {
-      this.userService.getUser(this.id).subscribe(
+      this.subscription = this.userService.getUser(this.id).subscribe(
         account => {
-          if (account != null) {
-            this.account = account;
-            this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
-          }
+          this.account = account;
+          this.newAccount = new NewAccount(account.username, '', account.firstName, account.lastName, account.userType);
         },
         error => {
           this.errorMessage = ErrorExtractor.extractErrorMessage(error);
         }
       );
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onSubmit() {

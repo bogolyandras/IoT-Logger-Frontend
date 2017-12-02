@@ -2,7 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {AppRoutingModule} from './/app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 import {WelcomeComponent} from './component/welcome/welcome.component';
 import {PageNotFoundComponent} from './component/page-not-found/page-not-found.component';
 import {HttpClientModule} from '@angular/common/http';
@@ -18,6 +18,7 @@ import {UserService} from './service/user.service';
 import {AddUserComponent} from './component/add-user/add-user.component';
 import {ViewUserComponent} from './component/view-user/view-user.component';
 import {EditUserComponent} from './component/edit-user/edit-user.component';
+import {DeviceService} from './service/device.service';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {EditUserComponent} from './component/edit-user/edit-user.component';
   ],
   providers: [
     AuthenticationService,
-    UserService
+    UserService,
+    DeviceService
   ],
   bootstrap: [AppComponent]
 })

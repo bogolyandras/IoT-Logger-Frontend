@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {AuthenticationService} from '../../../service/authentication.service';
 import {FirstUserCredentials} from '../../../value/authentication/first-user-credentials';
 import {ErrorExtractor} from '../../../utility/error-extractor';
@@ -9,7 +9,7 @@ import {ErrorExtractor} from '../../../utility/error-extractor';
   styleUrls: ['./first-user-credentials.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class FirstUserCredentialsComponent implements OnInit {
+export class FirstUserCredentialsComponent {
 
   constructor(private authenticationService: AuthenticationService) { }
 
@@ -17,9 +17,6 @@ export class FirstUserCredentialsComponent implements OnInit {
   errorMessage: string;
 
   model = new FirstUserCredentials('', '', '', '', '');
-
-  ngOnInit() {
-  }
 
   onSubmit() {
     this.errorMessage = null;

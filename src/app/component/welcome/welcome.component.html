@@ -1,25 +1,20 @@
-<div>
-  <div *ngIf="!initializationDetermined">
-    <div *ngIf="!initializationDeterminationFailed">Contacting the server...</div>
-    <div *ngIf="initializationDeterminationFailed">
-      <p>Failed to contact the server...</p>
-      <p><button (click)="retry()">Retry connection to the server</button></p>
-    </div>
+<div [ngSwitch]="initializationStatus">
+  <div *ngSwitchCase="InitializationStatus.Determining">
+    <p>Contacting the server...</p>
   </div>
-  <div *ngIf="initializationDetermined">
-    <div *ngIf="!initialized">
-      <app-first-user-credentials></app-first-user-credentials>
+  <div *ngSwitchCase="InitializationStatus.FailedToDetermine">
+    <p>Failed to contact the server...</p>
+    <p><button (click)="retry()">Retry connection to the server</button></p>
+  </div>
+  <div *ngSwitchCase="InitializationStatus.NotInitialized">
+    <app-first-user-credentials></app-first-user-credentials>
+  </div>
+  <div *ngSwitchCase="InitializationStatus.Initialized">
+    <div *ngIf="account == null">
+      <app-login-form></app-login-form>
     </div>
-    <div *ngIf="initialized">
-      <div *ngIf="!authenticationDetermined">Determining if logged in or not...</div>
-      <div *ngIf="authenticationDetermined">
-        <div *ngIf="authenticated">
-          <app-my-account></app-my-account>
-        </div>
-        <div *ngIf="!authenticated">
-          <app-login-form></app-login-form>
-        </div>
-      </div>
+    <div *ngIf="account != null">
+      <app-my-account></app-my-account>
     </div>
   </div>
 </div>
