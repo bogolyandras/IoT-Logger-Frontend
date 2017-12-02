@@ -22,11 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
       account => {
         if (account != null) {
           this.loggedIn = true;
-          if (account.userType === UserType.Administrator) {
-            this.isAdministrator = true;
-          } else {
-            this.isAdministrator = false;
-          }
+          this.isAdministrator = account.userType === UserType.Administrator;
         } else {
           this.loggedIn = false;
           this.isAdministrator = false;

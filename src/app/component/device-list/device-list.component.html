@@ -1,3 +1,26 @@
+<h1>Device list</h1>
 <p>
-  device-list works!
+  <button routerLink="/add-device">Add device</button>
 </p>
+<div *ngIf="errorMessage != null">
+  <p class="warning">{{errorMessage}}</p>
+</div>
+<div *ngIf="devices == null">
+  <p>Loading device list...</p>
+</div>
+<div *ngIf="devices != null">
+  <div *ngIf="isAdministrator">
+    <input type="checkbox" (change)="getDevices()" id="onlyMyDevicesCheckBox" [(ngModel)]="justMyDevices">
+    <label for="onlyMyDevicesCheckBox">Show only my devices</label>
+  </div>
+  <table class="list">
+    <tr>
+      <th>Device name</th>
+      <th *ngIf="!justMyDevices">Owner id</th>
+    </tr>
+    <tr *ngFor="let device of devices">
+      <td><a routerLink="/view-device/{{device.id}}">{{device.name}}</a></td>
+      <td *ngIf="!justMyDevices"><a routerLink="/view-user/{{device.ownerId}}">{{device.ownerId}}</a></td>
+    </tr>
+  </table>
+</div>

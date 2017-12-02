@@ -15,6 +15,7 @@ export class AuthenticationService {
 
   constructor(private httpClient: HttpClient) {
     this.initializationStatus = InitializationStatus.FailedToDetermine;
+    this.authenticationToken = localStorage.getItem('iotlogger_token');
     this.account.next(null);
     this.determineIfInitialized();
   }
@@ -100,7 +101,6 @@ export class AuthenticationService {
   }
 
   determineIfLoggedIn(): void {
-    this.authenticationToken = localStorage.getItem('iotlogger_token');
     if (this.authenticationToken != null) {
       this.attemptLoginWithStoredToken();
     }
