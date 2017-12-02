@@ -8,6 +8,8 @@ import {DeviceListComponent} from './component/device-list/device-list.component
 import {AddUserComponent} from './component/add-user/add-user.component';
 import {ViewUserComponent} from './component/view-user/view-user.component';
 import {EditUserComponent} from './component/edit-user/edit-user.component';
+import {AddDeviceComponent} from './component/add-device/add-device.component';
+import {ViewDeviceComponent} from './component/view-device/view-device.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/welcome', pathMatch: 'full' },
@@ -19,6 +21,8 @@ const routes: Routes = [
   { path: 'edit-user', component: EditUserComponent },
   { path: 'edit-user/:id', component: EditUserComponent },
   { path: 'device-list', component: DeviceListComponent },
+  { path: 'add-device', component: AddDeviceComponent },
+  { path: 'view-device/:id', component: ViewDeviceComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

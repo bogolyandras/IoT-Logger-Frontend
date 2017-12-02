@@ -19,6 +19,8 @@ import {AddUserComponent} from './component/add-user/add-user.component';
 import {ViewUserComponent} from './component/view-user/view-user.component';
 import {EditUserComponent} from './component/edit-user/edit-user.component';
 import {DeviceService} from './service/device.service';
+import { AddDeviceComponent } from './component/add-device/add-device.component';
+import { ViewDeviceComponent } from './component/view-device/view-device.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import {DeviceService} from './service/device.service';
     DeviceListComponent,
     AddUserComponent,
     ViewUserComponent,
-    EditUserComponent
+    EditUserComponent,
+    AddDeviceComponent,
+    ViewDeviceComponent
   ],
   imports: [
     BrowserModule,

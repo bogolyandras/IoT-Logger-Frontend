@@ -22,7 +22,7 @@ p, a, h1, h2, h3, h4, h5, h6, span, input, label, button {
   margin: 5px;
 }
 
-input[type=text], input[type=password], select, button {
+input[type=text], input[type=password], select, button, textarea {
   width: 300px;
 }
 

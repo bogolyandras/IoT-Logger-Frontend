@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {NewAccount} from '../../value/account/new-account';
 import {UserType} from '../../value/account/account';
 import {UserService} from '../../service/user.service';
@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./add-user.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent {
 
   constructor(
     private userService: UserService,
@@ -24,9 +24,6 @@ export class AddUserComponent implements OnInit {
   userTypes = Object.keys(UserType);
 
   model = new NewAccount('', '', '', '', UserType.User);
-
-  ngOnInit() {
-  }
 
   onSubmit() {
     this.errorMessage = null;
