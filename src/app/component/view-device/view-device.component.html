@@ -9,6 +9,8 @@
     <table class="collapse">
       <tr>
         <td>
+          <h2>Identifier</h2>
+          <p>{{device.id}}</p>
           <h2>Name</h2>
           <p>{{device.name}}</p>
           <h2>Description</h2>
@@ -17,8 +19,47 @@
         <td>
           <p><button routerLink="/edit-device/{{device.id}}">Edit</button></p>
           <p><button (click)="deleteDevice()">Delete</button></p>
+          <p *ngIf="!showNewLogForm"><button (click)="addLog()">Add log</button></p>
         </td>
       </tr>
     </table>
   </div>
+  <form #addLogForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="showNewLogForm">
+    <table class="collapse">
+      <tr>
+        <td class="labelbox"></td>
+        <td><h1>Add a new log</h1></td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="metric1">Metric 1:</label></td>
+        <td>
+          <input type="number" [(ngModel)]="model.metric1" id="metric1" name="metric1" #metric1="ngModel">
+          <span [hidden]="metric1.valid || metric1.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="metric2">Metric 2:</label></td>
+        <td>
+          <input type="number" [(ngModel)]="model.metric2" id="metric2" name="metric2" #metric2="ngModel">
+          <span [hidden]="metric2.valid || metric2.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="metric3">Metric 3:</label></td>
+        <td>
+          <input type="number" [(ngModel)]="model.metric3" id="metric3" name="metric3" #metric3="ngModel">
+          <span [hidden]="metric3.valid || metric3.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="warning"><p>{{newLogErrorMessage}}</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" [disabled]="submitted || !addLogForm.form.valid">Submit</button></td>
+      </tr>
+    </table>
+  </form>
 </div>
+

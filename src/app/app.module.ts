@@ -22,6 +22,7 @@ import {DeviceService} from './service/device.service';
 import {AddDeviceComponent} from './component/add-device/add-device.component';
 import {ViewDeviceComponent} from './component/view-device/view-device.component';
 import {EditDeviceComponent} from './component/edit-device/edit-device.component';
+import {LogService} from './service/log.service';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import {EditDeviceComponent} from './component/edit-device/edit-device.component
   providers: [
     AuthenticationService,
     UserService,
-    DeviceService
+    DeviceService,
+    LogService
   ],
   bootstrap: [AppComponent]
 })
