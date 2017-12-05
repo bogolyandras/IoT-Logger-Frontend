@@ -13,7 +13,7 @@ export class MyAccountComponent implements OnInit, OnDestroy {
 
   constructor(private authenticationService: AuthenticationService) { }
 
-  private account: Account;
+  account: Account;
 
   private subscription: Subscription;
 

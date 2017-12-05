@@ -19,7 +19,7 @@ export class DeviceListComponent implements OnInit, OnDestroy {
     private deviceService: DeviceService) { }
 
   errorMessage: string;
-  private devices: Device[];
+  devices: Device[];
 
   isAdministrator = false;
   justMyDevices = true;
