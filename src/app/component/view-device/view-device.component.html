@@ -20,6 +20,7 @@
           <p><button routerLink="/edit-device/{{device.id}}">Edit</button></p>
           <p><button (click)="deleteDevice()">Delete</button></p>
           <p *ngIf="!showNewLogForm"><button (click)="addLog()">Add log</button></p>
+          <p *ngIf="!showQueryLogsForm"><button (click)="queryLogs()">Query logs</button></p>
         </td>
       </tr>
     </table>
@@ -68,7 +69,7 @@
       </tr>
     </table>
   </form>
-  <form #aggregateLogsForm="ngForm" (ngSubmit)="onQueryLogs()">
+  <form #aggregateLogsForm="ngForm" (ngSubmit)="onQueryLogs()" *ngIf="showQueryLogsForm">
     <table class="collapse">
       <tr>
         <td class="labelbox"></td>
@@ -91,6 +92,20 @@
         </td>
       </tr>
       <tr>
+        <td class="labelbox"><label for="queryLogFromDate">From:</label></td>
+        <td>
+          <input type="date" [(ngModel)]="queryLogFromDate" id="queryLogFromDate" name="queryLogFromDate">
+          <input type="time" [(ngModel)]="queryLogFromTime" id="queryLogFromTime" name="queryLogFromTime">
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="queryLogToDate">To:</label></td>
+        <td>
+          <input type="date" [(ngModel)]="queryLogToDate" id="queryLogToDate" name="queryLogToDate">
+          <input type="time" [(ngModel)]="queryLogToTime" id="queryLogToTime" name="queryLogToTime">
+        </td>
+      </tr>
+      <tr>
         <td></td>
         <td class="warning"><p>{{logAggregationErrorMessage}}</p></td>
       </tr>
@@ -100,4 +115,32 @@
       </tr>
     </table>
   </form>
+  <div *ngIf="logAggregation != null">
+    <table class="list">
+      <tr>
+        <th>Date</th>
+        <th>Metric 1 minimum</th>
+        <th>Metric 1 mean</th>
+        <th>Metric 1 maximum</th>
+        <th>Metric 2 minimum</th>
+        <th>Metric 2 mean</th>
+        <th>Metric 2 maximum</th>
+        <th>Metric 3 minimum</th>
+        <th>Metric 3 mean</th>
+        <th>Metric 3 maximum</th>
+      </tr>
+      <tr *ngFor="let aLogAggregation of logAggregation">
+        <td>{{aLogAggregation.key}}</td>
+        <td>{{aLogAggregation.value.metric1.minimum}}</td>
+        <td>{{aLogAggregation.value.metric1.mean}}</td>
+        <td>{{aLogAggregation.value.metric1.maximum}}</td>
+        <td>{{aLogAggregation.value.metric2.minimum}}</td>
+        <td>{{aLogAggregation.value.metric2.mean}}</td>
+        <td>{{aLogAggregation.value.metric2.maximum}}</td>
+        <td>{{aLogAggregation.value.metric3.minimum}}</td>
+        <td>{{aLogAggregation.value.metric3.mean}}</td>
+        <td>{{aLogAggregation.value.metric3.maximum}}</td>
+      </tr>
+    </table>
+  </div>
 </div>

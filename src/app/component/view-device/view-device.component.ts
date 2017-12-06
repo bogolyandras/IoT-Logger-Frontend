@@ -7,6 +7,7 @@ import {LogService} from '../../service/log.service';
 import {NewLog} from '../../value/log/new-log';
 import {LogAggregationByType, LogAggregationRequest} from '../../value/log/log-aggregation-request';
 import {DateUtility} from '../../utility/date-utility';
+import {LogAggregation, MetricContainer} from '../../value/log/log-aggregation';
 
 @Component({
   selector: 'app-view-device',
@@ -29,18 +30,27 @@ export class ViewDeviceComponent implements OnInit {
   errorMessage: string;
 
   showNewLogForm = false;
+  showQueryLogsForm = false;
   newLogErrorMessage: string;
   logSubmitted = false;
 
+  private _24HoursInMilliseconds = 86400000;
   private componentInitializationDate = new Date();
   newLogDate = DateUtility.extractDate(this.componentInitializationDate);
   newLogTime = DateUtility.extractTime(this.componentInitializationDate);
   model = new NewLog(null, null, null, null);
 
+  queryLogFromDate = DateUtility.extractDate(new Date(this.componentInitializationDate.getTime() - 365 * this._24HoursInMilliseconds));
+  queryLogFromTime = DateUtility.extractTime(new Date(this.componentInitializationDate.getTime() - 365 * this._24HoursInMilliseconds));
+  queryLogToDate = DateUtility.extractDate(new Date(this.componentInitializationDate.getTime() + this._24HoursInMilliseconds));
+  queryLogToTime = DateUtility.extractTime(new Date(this.componentInitializationDate.getTime() + this._24HoursInMilliseconds));
+
   logAggregationTypes = Object.keys(LogAggregationByType);
   logAggregationRequestModel = new LogAggregationRequest(new Date().getTimezoneOffset(), LogAggregationByType.Daily, null, null);
   logAggregationErrorMessage: string;
   aggregationSubmitted = false;
+
+  logAggregation: Array<{ key: string, value: MetricContainer }>;
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -69,6 +79,10 @@ export class ViewDeviceComponent implements OnInit {
     this.showNewLogForm = true;
   }
 
+  queryLogs(): void {
+    this.showQueryLogsForm = true;
+  }
+
   onSubmitLog(): void {
     this.newLogErrorMessage = null;
     this.logSubmitted = true;
@@ -92,6 +106,24 @@ export class ViewDeviceComponent implements OnInit {
 
   onQueryLogs(): void {
     this.aggregationSubmitted = true;
+    this.logAggregationErrorMessage = null;
+    this.logAggregation = null;
+    this.logAggregationRequestModel.lowTimestampFilter = DateUtility.timeStampFromDateAndTime(this.queryLogFromDate, this.queryLogFromTime);
+    this.logAggregationRequestModel.highTimestampFilter = DateUtility.timeStampFromDateAndTime(this.queryLogToDate, this.queryLogToTime);
+    this.logService.getLogAggregation(this.id, this.logAggregationRequestModel).subscribe(
+      result => {
+        this.aggregationSubmitted = false;
+        this.logAggregation = [];
+        Object.keys(result.logs).map(
+          (key) => this.logAggregation.push({key: key, value: result.logs[key]})
+        );
+
+      },
+      error => {
+        this.logAggregationErrorMessage = ErrorExtractor.extractErrorMessage(error);
+        this.aggregationSubmitted = false;
+      }
+    );
   }
 
 }
