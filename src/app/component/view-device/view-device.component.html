@@ -24,11 +24,18 @@
       </tr>
     </table>
   </div>
-  <form #addLogForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="showNewLogForm">
+  <form #addLogForm="ngForm" (ngSubmit)="onSubmitLog()" *ngIf="showNewLogForm">
     <table class="collapse">
       <tr>
         <td class="labelbox"></td>
         <td><h1>Add a new log</h1></td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label>Date:</label></td>
+        <td>
+          <input type="date" [(ngModel)]="newLogDate" id="newLogDate" name="newLogDate">
+          <input type="time" [(ngModel)]="newLogTime" id="newLogTime" name="newLogTime">
+        </td>
       </tr>
       <tr>
         <td class="labelbox"><label for="metric1">Metric 1:</label></td>
@@ -57,9 +64,40 @@
       </tr>
       <tr>
         <td></td>
-        <td><button type="submit" [disabled]="submitted || !addLogForm.form.valid">Submit</button></td>
+        <td><button type="submit" [disabled]="logSubmitted || !addLogForm.form.valid">Submit</button></td>
+      </tr>
+    </table>
+  </form>
+  <form #aggregateLogsForm="ngForm" (ngSubmit)="onQueryLogs()">
+    <table class="collapse">
+      <tr>
+        <td class="labelbox"></td>
+        <td><h1>Query existing logs</h1></td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="offset">Timezone offset:</label></td>
+        <td>
+          <input type="number" [(ngModel)]="logAggregationRequestModel.offset" id="offset" name="offset" #offset="ngModel">
+          <span [hidden]="offset.valid || offset.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="labelbox"><label for="aggregationBy">Log aggregation:</label></td>
+        <td>
+          <select [(ngModel)]="logAggregationRequestModel.aggregationBy" id="aggregationBy" name="aggregationBy" #aggregationBy="ngModel" required>
+            <option *ngFor="let logAggregationType of logAggregationTypes" [value]="logAggregationType" [label]="logAggregationType" [attr.selected]="logAggregationType==logAggregationRequestModel.aggregationBy ? true : null">{{logAggregationType}}</option>
+          </select>
+          <span [hidden]="aggregationBy.valid || aggregationBy.pristine" class="warning">⚠️</span>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="warning"><p>{{logAggregationErrorMessage}}</p></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><button type="submit" [disabled]="aggregationSubmitted || !aggregateLogsForm.form.valid">Query</button></td>
       </tr>
     </table>
   </form>
 </div>
-

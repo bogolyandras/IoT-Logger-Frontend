@@ -5,6 +5,8 @@ import {DeviceService} from '../../service/device.service';
 import {ErrorExtractor} from '../../utility/error-extractor';
 import {LogService} from '../../service/log.service';
 import {NewLog} from '../../value/log/new-log';
+import {LogAggregationByType, LogAggregationRequest} from '../../value/log/log-aggregation-request';
+import {DateUtility} from '../../utility/date-utility';
 
 @Component({
   selector: 'app-view-device',
@@ -28,9 +30,17 @@ export class ViewDeviceComponent implements OnInit {
 
   showNewLogForm = false;
   newLogErrorMessage: string;
-  submitted = false;
+  logSubmitted = false;
 
+  private componentInitializationDate = new Date();
+  newLogDate = DateUtility.extractDate(this.componentInitializationDate);
+  newLogTime = DateUtility.extractTime(this.componentInitializationDate);
   model = new NewLog(null, null, null, null);
+
+  logAggregationTypes = Object.keys(LogAggregationByType);
+  logAggregationRequestModel = new LogAggregationRequest(new Date().getTimezoneOffset(), LogAggregationByType.Daily, null, null);
+  logAggregationErrorMessage: string;
+  aggregationSubmitted = false;
 
   ngOnInit() {
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -59,20 +69,29 @@ export class ViewDeviceComponent implements OnInit {
     this.showNewLogForm = true;
   }
 
-  onSubmit() {
+  onSubmitLog(): void {
     this.newLogErrorMessage = null;
-    this.submitted = true;
+    this.logSubmitted = true;
+    this.model.timestamp = DateUtility.timeStampFromDateAndTime(this.newLogDate, this.newLogTime);
     this.logService.storeLog(this.id, this.model).subscribe(
       account => {
         this.newLogErrorMessage = null;
-        this.submitted = false;
+        this.logSubmitted = false;
+
+        const date = new Date();
+        this.newLogDate = DateUtility.extractDate(date);
+        this.newLogTime = DateUtility.extractTime(date);
         this.model = new NewLog(null, null, null, null);
       },
       error => {
         this.newLogErrorMessage = ErrorExtractor.extractErrorMessage(error);
-        this.submitted = false;
+        this.logSubmitted = false;
       }
     );
+  }
+
+  onQueryLogs(): void {
+    this.aggregationSubmitted = true;
   }
 
 }

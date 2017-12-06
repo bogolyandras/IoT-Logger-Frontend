@@ -1,7 +1,7 @@
 export class NewLog {
 
   constructor(
-    public timestamp: string,
+    public timestamp: number,
     public metric1: number,
     public metric2: number,
     public metric3: number
